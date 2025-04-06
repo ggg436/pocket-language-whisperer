@@ -1,4 +1,3 @@
-
 import { TranslationResult } from '@/types/translation';
 
 // Simulated offline translation data
@@ -76,7 +75,7 @@ const translationPairs: Record<string, Record<string, Record<string, string>>> =
   },
   fr: {
     en: {
-      'bonjour': 'hello', // This was duplicated with different translations
+      'bonjour': 'hello',
       'au revoir': 'goodbye',
       'comment ça va': 'how are you',
       'merci': 'thank you',
@@ -136,8 +135,13 @@ export const translateText = async (
   sourceLanguage: string, 
   targetLanguage: string
 ): Promise<TranslationResult> => {
+  // Return early if source and target languages are the same
+  if (sourceLanguage === targetLanguage) {
+    return { translatedText: text };
+  }
+  
   // Simulate network delay
-  await new Promise(resolve => setTimeout(resolve, 500));
+  await new Promise(resolve => setTimeout(resolve, 300));
   
   const lowerText = text.toLowerCase();
   
@@ -154,40 +158,59 @@ export const translateText = async (
   const detectedLanguage = sourceLanguage === 'auto' ? detectLanguage(text) : undefined;
   const actualSourceLanguage = detectedLanguage || sourceLanguage;
   
-  // Basic character replacements for demonstration
-  if (targetLanguage === 'es') {
-    translatedText = text
-      .replace(/th/g, 't')
-      .replace(/the/g, 'el')
-      .replace(/is/g, 'es')
-      .replace(/and/g, 'y')
-      .replace(/I am/g, 'Yo soy')
-      .replace(/hello/g, 'hola')
-      .replace(/world/g, 'mundo');
-  } else if (targetLanguage === 'fr') {
-    translatedText = text
-      .replace(/th/g, 't')
-      .replace(/the/g, 'le')
-      .replace(/is/g, 'est')
-      .replace(/and/g, 'et')
-      .replace(/I am/g, 'Je suis')
-      .replace(/hello/g, 'bonjour')
-      .replace(/world/g, 'monde');
-  } else if (targetLanguage === 'en' && (actualSourceLanguage === 'es' || actualSourceLanguage === 'fr')) {
-    translatedText = text
-      .replace(/el/g, 'the')
-      .replace(/la/g, 'the')
-      .replace(/es/g, 'is')
-      .replace(/y/g, 'and')
-      .replace(/yo soy/g, 'I am')
-      .replace(/hola/g, 'hello')
-      .replace(/mundo/g, 'world')
-      .replace(/le/g, 'the')
-      .replace(/est/g, 'is')
-      .replace(/et/g, 'and')
-      .replace(/je suis/g, 'I am')
-      .replace(/bonjour/g, 'hello')
-      .replace(/monde/g, 'world');
+  // If languages are the same, don't translate
+  if (actualSourceLanguage === targetLanguage) {
+    return { translatedText, detectedLanguage };
+  }
+  
+  // Basic word-by-word "translation" for demonstration
+  const words = text.split(' ');
+  const translatedWords = words.map(word => {
+    const lowerWord = word.toLowerCase();
+    
+    // Try to find this word in our dictionary
+    if (translationPairs[actualSourceLanguage]?.[targetLanguage]?.[lowerWord]) {
+      // Preserve original capitalization
+      if (word[0] === word[0].toUpperCase()) {
+        return translationPairs[actualSourceLanguage][targetLanguage][lowerWord].charAt(0).toUpperCase() + 
+               translationPairs[actualSourceLanguage][targetLanguage][lowerWord].slice(1);
+      }
+      return translationPairs[actualSourceLanguage][targetLanguage][lowerWord];
+    }
+    
+    // Very simple character replacements as fallback
+    if (targetLanguage === 'es' && actualSourceLanguage === 'en') {
+      return word
+        .replace(/th/g, 't')
+        .replace(/the/g, 'el')
+        .replace(/is/g, 'es')
+        .replace(/and/g, 'y');
+    } else if (targetLanguage === 'fr' && actualSourceLanguage === 'en') {
+      return word
+        .replace(/th/g, 't')
+        .replace(/the/g, 'le')
+        .replace(/is/g, 'est')
+        .replace(/and/g, 'et');
+    }
+    
+    // If no replacement found, keep original word
+    return word;
+  });
+  
+  translatedText = translatedWords.join(' ');
+  
+  // Ensure we're not just returning the original text
+  if (translatedText === text && actualSourceLanguage !== targetLanguage) {
+    // Apply some more obvious changes to show translation is happening
+    if (targetLanguage === 'es') {
+      translatedText += ' ¿comprende?';
+    } else if (targetLanguage === 'fr') {
+      translatedText += ' n\'est-ce pas?';
+    } else if (targetLanguage === 'de') {
+      translatedText += ' verstehen?';
+    } else if (targetLanguage === 'zh') {
+      translatedText += ' 明白了吗？';
+    }
   }
   
   return { 
@@ -223,4 +246,78 @@ export const speakText = (text: string, language: string): void => {
   } else {
     console.error('Text-to-speech is not supported in this browser');
   }
+};
+
+// Added for voice communication
+export const startSpeechRecognition = (
+  language: string, 
+  onResult: (text: string) => void, 
+  onEnd: () => void
+): (() => void) => {
+  if (!('webkitSpeechRecognition' in window)) {
+    console.error('Speech recognition is not supported in this browser');
+    onEnd();
+    return () => {};
+  }
+  
+  // TypeScript doesn't know about webkitSpeechRecognition, so we use any
+  const SpeechRecognition = (window as any).webkitSpeechRecognition || (window as any).SpeechRecognition;
+  const recognition = new SpeechRecognition();
+  
+  // Map language codes to BCP 47 language tags for better compatibility
+  const languageMap: Record<string, string> = {
+    'en': 'en-US',
+    'es': 'es-ES',
+    'fr': 'fr-FR', 
+    'de': 'de-DE',
+    'it': 'it-IT',
+    'pt': 'pt-BR',
+    'nl': 'nl-NL',
+    'ru': 'ru-RU',
+    'ar': 'ar-SA',
+    'hi': 'hi-IN',
+    'zh': 'zh-CN',
+    'ja': 'ja-JP',
+    'ko': 'ko-KR',
+  };
+  
+  recognition.lang = languageMap[language] || language;
+  recognition.interimResults = true;
+  recognition.continuous = true;
+  
+  recognition.onresult = (event: any) => {
+    let interimTranscript = '';
+    let finalTranscript = '';
+    
+    for (let i = event.resultIndex; i < event.results.length; i++) {
+      const transcript = event.results[i][0].transcript;
+      if (event.results[i].isFinal) {
+        finalTranscript += transcript;
+      } else {
+        interimTranscript += transcript;
+      }
+    }
+    
+    // Use either the final transcript if available, or the interim if not
+    const text = finalTranscript || interimTranscript;
+    if (text) {
+      onResult(text);
+    }
+  };
+  
+  recognition.onerror = (event: any) => {
+    console.error('Speech recognition error', event.error);
+    onEnd();
+  };
+  
+  recognition.onend = () => {
+    onEnd();
+  };
+  
+  recognition.start();
+  
+  // Return a function to stop recognition
+  return () => {
+    recognition.stop();
+  };
 };

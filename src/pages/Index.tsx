@@ -3,6 +3,7 @@ import React from 'react';
 import { Button } from '@/components/ui/button';
 import LanguageSelector from '@/components/LanguageSelector';
 import TranslationInput from '@/components/TranslationInput';
+import VoiceConversation from '@/components/VoiceConversation';
 import { TranslationProvider, useTranslation } from '@/context/TranslationContext';
 import HistoryDrawer from '@/components/HistoryDrawer';
 import { History, ArrowLeftRight } from 'lucide-react';
@@ -63,6 +64,7 @@ const TranslatorApp: React.FC = () => {
           </div>
 
           <TranslationInput />
+          <VoiceConversation />
         </div>
       </main>
 

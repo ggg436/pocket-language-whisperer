@@ -6,7 +6,7 @@ import { Card } from '@/components/ui/card';
 import { translateText, speakText, detectLanguage } from '@/services/translationService';
 import { getLanguageName } from '@/data/languages';
 import { useTranslation } from '@/context/TranslationContext';
-import { Volume } from 'lucide-react';
+import { Volume, Loader2 } from 'lucide-react';
 import { useToast } from '@/components/ui/use-toast';
 
 const TranslationInput: React.FC = () => {
@@ -79,6 +79,7 @@ const TranslationInput: React.FC = () => {
 
   return (
     <div className="flex flex-col w-full max-w-3xl mx-auto">
+      <h2 className="text-center text-lg font-medium mb-4">Text Translation</h2>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-6 w-full">
         {/* Source Text */}
         <Card className="relative p-4 bg-white shadow-sm">
@@ -127,7 +128,8 @@ const TranslationInput: React.FC = () => {
           <div className="min-h-[150px]">
             {isTranslating ? (
               <div className="h-full flex items-center justify-center">
-                <div className="animate-pulse text-gray-400">Translating...</div>
+                <Loader2 className="h-5 w-5 animate-spin text-google-blue mr-2" />
+                <span className="text-gray-400">Translating...</span>
               </div>
             ) : (
               <div className="text-md">
