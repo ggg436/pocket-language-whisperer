@@ -26,6 +26,9 @@ const TranslatorApp: React.FC = () => {
               <span className="text-google-red">t</span>
               <span className="ml-2">Translate</span>
             </h1>
+            <div className="ml-2 text-xs bg-green-100 text-green-800 px-2 py-0.5 rounded-full">
+              Pro
+            </div>
           </div>
           <div className="flex items-center space-x-2">
             <Button variant="ghost" size="sm" className="text-gray-500 hidden md:flex items-center gap-1">

@@ -12,6 +12,7 @@ import { useToast } from '@/components/ui/use-toast';
 const TranslationInput: React.FC = () => {
   const [sourceText, setSourceText] = useState('');
   const [translatedText, setTranslatedText] = useState('');
+  const [phoneticText, setPhoneticText] = useState<string | undefined>(undefined);
   const [isTranslating, setIsTranslating] = useState(false);
   const { sourceLanguage, targetLanguage, addToHistory } = useTranslation();
   const { toast } = useToast();
@@ -24,6 +25,7 @@ const TranslationInput: React.FC = () => {
         try {
           const result = await translateText(sourceText, sourceLanguage, targetLanguage);
           setTranslatedText(result.translatedText);
+          setPhoneticText(result.phonetic);
           
           // Add to history if translation is different from source
           if (result.translatedText && result.translatedText !== sourceText) {
@@ -48,6 +50,7 @@ const TranslationInput: React.FC = () => {
         }
       } else {
         setTranslatedText('');
+        setPhoneticText(undefined);
       }
     }, 500); // Debounce for 500ms
 
@@ -61,6 +64,7 @@ const TranslationInput: React.FC = () => {
   const handleClearText = () => {
     setSourceText('');
     setTranslatedText('');
+    setPhoneticText(undefined);
   };
 
   const handleDetectLanguage = async () => {
@@ -151,9 +155,16 @@ const TranslationInput: React.FC = () => {
                 <span className="text-gray-400">Translating...</span>
               </div>
             ) : (
-              <div className="text-md">
-                {translatedText || (
-                  <span className="text-gray-400">Translation will appear here</span>
+              <div className="text-md flex flex-col">
+                <div>
+                  {translatedText || (
+                    <span className="text-gray-400">Translation will appear here</span>
+                  )}
+                </div>
+                {phoneticText && (
+                  <div className="mt-2 text-sm text-gray-500">
+                    {phoneticText}
+                  </div>
                 )}
               </div>
             )}

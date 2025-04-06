@@ -15,5 +15,7 @@ export interface TranslationHistory {
 
 export interface TranslationResult {
   translatedText: string;
+  phonetic?: string;  // Added phonetic translation for non-Latin script languages
   detectedLanguage?: string;
 }
+

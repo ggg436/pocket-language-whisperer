@@ -58,7 +58,160 @@ const translationDatasets: Record<string, Record<string, Record<string, string>>
       'faisant': 'faisant',
       'qu\'est-ce que vous faites': 'qu\'est-ce que vous faites',
     },
-    // ... other language pairs can be added here
+    ne: {
+      'hello': 'नमस्ते',
+      'how are you': 'तपाईं कस्तो हुनुहुन्छ',
+      'hello how are you': 'नमस्ते तपाईं कस्तो हुनुहुन्छ',
+      'goodbye': 'नमस्कार',
+      'thank you': 'धन्यवाद',
+      'yes': 'हो',
+      'no': 'होइन',
+      'please': 'कृपया',
+      'excuse me': 'माफ गर्नुहोस्',
+      'i love you': 'म तिमीलाई माया गर्छु',
+      'what is your name': 'तिम्रो नाम के हो',
+      'my name is': 'मेरो नाम हो',
+      'where is': 'कहाँ छ',
+      'i don\'t understand': 'मैले बुझिनँ',
+      'help': 'मद्दत',
+      'sorry': 'माफ गर्नुहोस्',
+      'good morning': 'शुभ प्रभात',
+      'good afternoon': 'शुभ दिउँसो',
+      'good evening': 'शुभ साँझ',
+      'how much is this': 'यो कति हो',
+    },
+    hi: {
+      'hello': 'नमस्ते',
+      'how are you': 'आप कैसे हैं',
+      'hello how are you': 'नमस्ते आप कैसे हैं',
+      'goodbye': 'अलविदा',
+      'thank you': 'धन्यवाद',
+      'yes': 'हां',
+      'no': 'नहीं',
+      'please': 'कृपया',
+      'excuse me': 'क्षमा करें',
+      'i love you': 'मैं तुमसे प्यार करता हूं',
+      'what is your name': 'आपका नाम क्या है',
+      'my name is': 'मेरा नाम है',
+      'where is': 'कहां है',
+      'i don\'t understand': 'मैं समझ नहीं पा रहा हूं',
+      'help': 'मदद',
+      'sorry': 'माफ़ करें',
+      'good morning': 'सुप्रभात',
+      'good afternoon': 'शुभ दोपहर',
+      'good evening': 'शुभ संध्या',
+      'how much is this': 'यह कितने का है',
+    },
+    ja: {
+      'hello': 'こんにちは',
+      'how are you': 'お元気ですか',
+      'hello how are you': 'こんにちは、お元気ですか',
+      'goodbye': 'さようなら',
+      'thank you': 'ありがとう',
+      'yes': 'はい',
+      'no': 'いいえ',
+      'please': 'お願いします',
+      'excuse me': 'すみません',
+      'i love you': '愛しています',
+      'what is your name': 'お名前は何ですか',
+      'my name is': '私の名前は',
+      'where is': 'どこですか',
+      'i don\'t understand': '理解できません',
+      'help': '助けて',
+      'sorry': 'ごめんなさい',
+      'good morning': 'おはようございます',
+      'good afternoon': 'こんにちは',
+      'good evening': 'こんばんは',
+      'how much is this': 'これはいくらですか',
+    },
+    zh: {
+      'hello': '你好',
+      'how are you': '你好吗',
+      'hello how are you': '你好，你好吗',
+      'goodbye': '再见',
+      'thank you': '谢谢',
+      'yes': '是的',
+      'no': '不是',
+      'please': '请',
+      'excuse me': '对不起',
+      'i love you': '我爱你',
+      'what is your name': '你叫什么名字',
+      'my name is': '我的名字是',
+      'where is': '在哪里',
+      'i don\'t understand': '我不明白',
+      'help': '帮助',
+      'sorry': '对不起',
+      'good morning': '早上好',
+      'good afternoon': '下午好',
+      'good evening': '晚上好',
+      'how much is this': '这个多少钱',
+    },
+    ar: {
+      'hello': 'مرحبا',
+      'how are you': 'كيف حالك',
+      'hello how are you': 'مرحبا كيف حالك',
+      'goodbye': 'وداعا',
+      'thank you': 'شكرا لك',
+      'yes': 'نعم',
+      'no': 'لا',
+      'please': 'من فضلك',
+      'excuse me': 'عذرا',
+      'i love you': 'أحبك',
+      'what is your name': 'ما هو اسمك',
+      'my name is': 'اسمي هو',
+      'where is': 'أين هو',
+      'i don\'t understand': 'أنا لا أفهم',
+      'help': 'مساعدة',
+      'sorry': 'آسف',
+      'good morning': 'صباح الخير',
+      'good afternoon': 'مساء الخير',
+      'good evening': 'مساء الخير',
+      'how much is this': 'كم هذا',
+    },
+    de: {
+      'hello': 'hallo',
+      'how are you': 'wie geht es dir',
+      'hello how are you': 'hallo wie geht es dir',
+      'goodbye': 'auf wiedersehen',
+      'thank you': 'danke',
+      'yes': 'ja',
+      'no': 'nein',
+      'please': 'bitte',
+      'excuse me': 'entschuldigung',
+      'i love you': 'ich liebe dich',
+      'what is your name': 'wie heißt du',
+      'my name is': 'mein name ist',
+      'where is': 'wo ist',
+      'i don\'t understand': 'ich verstehe nicht',
+      'help': 'hilfe',
+      'sorry': 'entschuldigung',
+      'good morning': 'guten morgen',
+      'good afternoon': 'guten tag',
+      'good evening': 'guten abend',
+      'how much is this': 'wie viel kostet das',
+    },
+    ru: {
+      'hello': 'привет',
+      'how are you': 'как дела',
+      'hello how are you': 'привет как дела',
+      'goodbye': 'до свидания',
+      'thank you': 'спасибо',
+      'yes': 'да',
+      'no': 'нет',
+      'please': 'пожалуйста',
+      'excuse me': 'извините',
+      'i love you': 'я люблю тебя',
+      'what is your name': 'как тебя зовут',
+      'my name is': 'меня зовут',
+      'where is': 'где находится',
+      'i don\'t understand': 'я не понимаю',
+      'help': 'помогите',
+      'sorry': 'извините',
+      'good morning': 'доброе утро',
+      'good afternoon': 'добрый день',
+      'good evening': 'добрый вечер',
+      'how much is this': 'сколько это стоит',
+    },
   },
   es: {
     en: {
@@ -89,7 +242,6 @@ const translationDatasets: Record<string, Record<string, Record<string, string>>
       'qué estás haciendo': 'what are you doing',
       'hola qué estás haciendo': 'hello what are you doing',
     },
-    // ... other language pairs
   },
   fr: {
     en: {
@@ -118,7 +270,75 @@ const translationDatasets: Record<string, Record<string, Record<string, string>>
       'faisant': 'faisant',
       'qu\'est-ce que vous faites': 'what are you doing',
     },
-    // ... other language pairs
+  },
+  ne: {
+    en: {
+      'नमस्ते': 'hello',
+      'तपाईं कस्तो हुनुहुन्छ': 'how are you',
+      'नमस्ते तपाईं कस्तो हुनुहुन्छ': 'hello how are you',
+      'नमस्कार': 'goodbye',
+      'धन्यवाद': 'thank you',
+      'हो': 'yes',
+      'होइन': 'no',
+      'कृपया': 'please',
+      'माफ गर्नुहोस्': 'excuse me',
+      'म तिमीलाई माया गर्छु': 'i love you',
+      'तिम्रो नाम के हो': 'what is your name',
+      'मेरो नाम हो': 'my name is',
+      'कहाँ छ': 'where is',
+      'मैले बुझिनँ': 'i don\'t understand',
+      'मद्दत': 'help',
+      'शुभ प्रभात': 'good morning',
+      'शुभ दिउँसो': 'good afternoon',
+      'शुभ साँझ': 'good evening',
+      'यो कति हो': 'how much is this',
+    }
+  },
+  hi: {
+    en: {
+      'नमस्ते': 'hello',
+      'आप कैसे हैं': 'how are you',
+      'नमस्ते आप कैसे हैं': 'hello how are you',
+      'अलविदा': 'goodbye',
+      'धन्यवाद': 'thank you',
+      'हां': 'yes',
+      'नहीं': 'no',
+      'कृपया': 'please',
+      'क्षमा करें': 'excuse me',
+      'मैं तुमसे प्यार करता हूं': 'i love you',
+      'आपका नाम क्या है': 'what is your name',
+      'मेरा नाम है': 'my name is',
+      'कहां है': 'where is',
+      'मैं समझ नहीं पा रहा हूं': 'i don\'t understand',
+      'मदद': 'help',
+      'सुप्रभात': 'good morning',
+      'शुभ दोपहर': 'good afternoon',
+      'शुभ संध्या': 'good evening',
+      'यह कितने का है': 'how much is this',
+    }
+  },
+  ja: {
+    en: {
+      'こんにちは': 'hello',
+      'お元気ですか': 'how are you',
+      'こんにちは、お元気ですか': 'hello how are you',
+      'さようなら': 'goodbye',
+      'ありがとう': 'thank you',
+      'はい': 'yes',
+      'いいえ': 'no',
+      'お願いします': 'please',
+      'すみません': 'excuse me',
+      '愛しています': 'i love you',
+      'お名前は何ですか': 'what is your name',
+      '私の名前は': 'my name is',
+      'どこですか': 'where is',
+      '理解できません': 'i don\'t understand',
+      '助けて': 'help',
+      'おはようございます': 'good morning',
+      'こんにちは': 'good afternoon',
+      'こんばんは': 'good evening',
+      'これはいくらですか': 'how much is this',
+    }
   },
   // Add more source languages as needed
 };
@@ -135,6 +355,7 @@ const languagePatterns: Record<string, RegExp> = {
   ru: /[абвгдеёжзийклмнопрстуфхцчшщъыьэюя]/i,
   ar: /[\u0600-\u06FF]/,
   hi: /[\u0900-\u097F]/,
+  ne: /[\u0900-\u097F]|(\b(छ|हो|मा|को|र|हुन्छ|गर्छु|हुनुहुन्छ)\b)/i,
   zh: /[\u4E00-\u9FFF]/,
   ja: /[\u3040-\u309F\u30A0-\u30FF]/,
   ko: /[\uAC00-\uD7AF\u1100-\u11FF]/,
@@ -187,8 +408,21 @@ export const translateText = async (
   
   // First try to translate the entire text as a single phrase
   if (translationDatasets[actualSourceLanguage]?.[targetLanguage]?.[lowerText]) {
+    const translation = translationDatasets[actualSourceLanguage][targetLanguage][lowerText];
+    
+    // For languages like Nepali or Hindi that might need a phonetic translation
+    if (targetLanguage === 'ne' || targetLanguage === 'hi' || targetLanguage === 'ja' || 
+        targetLanguage === 'zh' || targetLanguage === 'ar' || targetLanguage === 'ru') {
+      const phonetic = getPhoneticTranslation(translation, targetLanguage);
+      return {
+        translatedText: translation,
+        phonetic,
+        detectedLanguage
+      };
+    }
+    
     return {
-      translatedText: translationDatasets[actualSourceLanguage][targetLanguage][lowerText],
+      translatedText: translation,
       detectedLanguage
     };
   }
@@ -204,15 +438,41 @@ export const translateText = async (
       return translatePhrase(trimmedSentence, actualSourceLanguage, targetLanguage);
     });
     
+    const fullTranslation = translatedSentences.join('. ');
+    
+    // For languages that might need a phonetic translation
+    if (targetLanguage === 'ne' || targetLanguage === 'hi' || targetLanguage === 'ja' || 
+        targetLanguage === 'zh' || targetLanguage === 'ar' || targetLanguage === 'ru') {
+      const phonetic = getPhoneticTranslation(fullTranslation, targetLanguage);
+      return {
+        translatedText: fullTranslation,
+        phonetic,
+        detectedLanguage
+      };
+    }
+    
     return {
-      translatedText: translatedSentences.join('. '),
+      translatedText: fullTranslation,
       detectedLanguage
     };
   }
   
   // Otherwise translate the input as a single phrase
+  const phraseTranslation = translatePhrase(lowerText, actualSourceLanguage, targetLanguage);
+  
+  // For languages that might need a phonetic translation
+  if (targetLanguage === 'ne' || targetLanguage === 'hi' || targetLanguage === 'ja' || 
+      targetLanguage === 'zh' || targetLanguage === 'ar' || targetLanguage === 'ru') {
+    const phonetic = getPhoneticTranslation(phraseTranslation, targetLanguage);
+    return {
+      translatedText: phraseTranslation,
+      phonetic,
+      detectedLanguage
+    };
+  }
+  
   return {
-    translatedText: translatePhrase(lowerText, actualSourceLanguage, targetLanguage),
+    translatedText: phraseTranslation,
     detectedLanguage
   };
 };
@@ -258,6 +518,35 @@ function translatePhrase(phrase: string, sourceLanguage: string, targetLanguage:
 }
 
 /**
+ * Get a phonetic translation for languages that use non-Latin scripts
+ */
+function getPhoneticTranslation(text: string, language: string): string | undefined {
+  // This is a simplified version. In a real app, you would use a more sophisticated
+  // transliteration system based on the target language.
+  
+  // Example phonetic mappings for Nepali
+  if (language === 'ne' && text === 'नमस्ते तपाईं कस्तो हुनुहुन्छ') {
+    return 'Namastē tapā'ī kasto hunuhuncha';
+  } else if (language === 'ne' && text === 'नमस्ते') {
+    return 'Namastē';
+  } else if (language === 'ne' && text === 'तपाईं कस्तो हुनुहुन्छ') {
+    return 'tapā'ī kasto hunuhuncha';
+  }
+  
+  // For Hindi
+  if (language === 'hi' && text === 'नमस्ते आप कैसे हैं') {
+    return 'Namaste aap kaise hain';
+  } else if (language === 'hi' && text === 'नमस्ते') {
+    return 'Namaste';
+  } else if (language === 'hi' && text === 'आप कैसे हैं') {
+    return 'Aap kaise hain';
+  }
+  
+  // For other languages you would add appropriate phonetic mappings
+  return undefined;
+}
+
+/**
  * Check if the phrase still contains words from the source language
  */
 function containsUntranslatedWords(phrase: string, sourceLanguage: string): boolean {
@@ -266,6 +555,8 @@ function containsUntranslatedWords(phrase: string, sourceLanguage: string): bool
     'en': /\b(the|is|are|am|was|were|have|has|had|do|does|did|can|could|what|where|when|how|who|why)\b/i,
     'es': /\b(el|la|los|las|es|son|está|están|tengo|tiene|tienen|hacer|hace|hizo|puede|qué|dónde|cuándo|cómo|quién|por qué)\b/i,
     'fr': /\b(le|la|les|est|sont|avoir|avez|fait|faire|peut|quoi|où|quand|comment|qui|pourquoi)\b/i,
+    'ne': /\b(छ|हो|मा|को|र|हुन्छ|गर्छु|हुनुहुन्छ)\b/i,
+    'hi': /\b(है|हूँ|था|थी|हो|मैं|तुम|आप|वह|यह|वे|क्या|कौन|कब|कहाँ|कैसे|क्यों)\b/i,
   };
   
   return patterns[sourceLanguage as keyof typeof patterns]?.test(phrase) || false;
@@ -275,7 +566,13 @@ function containsUntranslatedWords(phrase: string, sourceLanguage: string): bool
  * Apply simple character transformations as a fallback
  */
 function applySimpleTransformation(word: string, sourceLanguage: string, targetLanguage: string): string {
-  // Very simple character replacements as fallback
+  // For languages with different scripts, return a placeholder or the original
+  if (['ne', 'hi', 'ja', 'zh', 'ar', 'ru'].includes(targetLanguage)) {
+    // Return original word as fallback for unsupported words
+    return word;
+  }
+  
+  // Simple transformations for European languages
   if (targetLanguage === 'es' && sourceLanguage === 'en') {
     return word
       .replace(/th/g, 't')
@@ -315,6 +612,7 @@ export const speakText = (text: string, language: string): void => {
       'ru': 'ru-RU',
       'ar': 'ar-SA',
       'hi': 'hi-IN',
+      'ne': 'ne-NP',
       'zh': 'zh-CN',
       'ja': 'ja-JP',
       'ko': 'ko-KR',
@@ -355,6 +653,7 @@ export const startSpeechRecognition = (
     'ru': 'ru-RU',
     'ar': 'ar-SA',
     'hi': 'hi-IN',
+    'ne': 'ne-NP',
     'zh': 'zh-CN',
     'ja': 'ja-JP',
     'ko': 'ko-KR',
