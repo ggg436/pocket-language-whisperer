@@ -1,3 +1,4 @@
+
 import { TranslationResult } from '@/types/translation';
 
 // Simulated offline translation data
@@ -98,18 +99,36 @@ const translationPairs: Record<string, Record<string, Record<string, string>>> =
   },
 };
 
-// Simulate language detection
+// Language detection patterns
+const languagePatterns: Record<string, RegExp> = {
+  en: /\b(the|is|are|am|was|were|have|has|had|this|that|these|those)\b/i,
+  es: /[áéíóúüñ¿¡]|(\b(el|la|los|las|es|son|está|están|tengo|tiene|tienen|este|esta|estos|estas)\b)/i,
+  fr: /[àâçéèêëîïôùûüÿœæ]|(\b(le|la|les|est|sont|avoir|avez|cette|ces|cette|ces)\b)/i,
+  de: /[äöüß]|(\b(das|der|die|ist|sind|haben|hat|diese|dieser|dieses)\b)/i,
+  it: /[àèéìíîòóùú]|(\b(il|lo|la|i|gli|le|è|sono|ha|hanno|questo|questa|questi|queste)\b)/i,
+  pt: /[áàâãéêíóôõúç]|(\b(o|a|os|as|é|são|tem|têm|este|esta|estes|estas)\b)/i,
+  nl: /[ĳ]|(\b(de|het|is|zijn|hebben|heeft|deze|dit|die|dat)\b)/i,
+  ru: /[абвгдеёжзийклмнопрстуфхцчшщъыьэюя]/i,
+  ar: /[\u0600-\u06FF]/,
+  hi: /[\u0900-\u097F]/,
+  zh: /[\u4E00-\u9FFF]/,
+  ja: /[\u3040-\u309F\u30A0-\u30FF]/,
+  ko: /[\uAC00-\uD7AF\u1100-\u11FF]/,
+};
+
+// Simulate language detection with improved pattern matching
 export const detectLanguage = (text: string): string => {
-  const lowerText = text.toLowerCase();
+  if (!text.trim()) return 'en';
   
-  // Simple language detection based on typical character patterns
-  if (/[áéíóúüñ¿¡]/.test(lowerText)) {
-    return 'es'; // Spanish
-  } else if (/[àâçéèêëîïôùûüÿœæ]/.test(lowerText)) {
-    return 'fr'; // French
-  } else {
-    return 'en'; // Default to English
+  // Check against language patterns
+  for (const [langCode, pattern] of Object.entries(languagePatterns)) {
+    if (pattern.test(text)) {
+      return langCode;
+    }
   }
+  
+  // Default to English if no pattern matches
+  return 'en';
 };
 
 export const translateText = async (
@@ -132,9 +151,11 @@ export const translateText = async (
   // For demonstration purposes: fall back to a simple character replacement
   // This is not real translation, just a demo of the concept
   let translatedText = text;
+  const detectedLanguage = sourceLanguage === 'auto' ? detectLanguage(text) : undefined;
+  const actualSourceLanguage = detectedLanguage || sourceLanguage;
   
+  // Basic character replacements for demonstration
   if (targetLanguage === 'es') {
-    // Naive English to Spanish transformation
     translatedText = text
       .replace(/th/g, 't')
       .replace(/the/g, 'el')
@@ -144,7 +165,6 @@ export const translateText = async (
       .replace(/hello/g, 'hola')
       .replace(/world/g, 'mundo');
   } else if (targetLanguage === 'fr') {
-    // Naive English to French transformation
     translatedText = text
       .replace(/th/g, 't')
       .replace(/the/g, 'le')
@@ -153,28 +173,52 @@ export const translateText = async (
       .replace(/I am/g, 'Je suis')
       .replace(/hello/g, 'bonjour')
       .replace(/world/g, 'monde');
-  } else if (targetLanguage === 'en' && sourceLanguage === 'es') {
-    // Naive Spanish to English transformation
+  } else if (targetLanguage === 'en' && (actualSourceLanguage === 'es' || actualSourceLanguage === 'fr')) {
     translatedText = text
       .replace(/el/g, 'the')
+      .replace(/la/g, 'the')
       .replace(/es/g, 'is')
       .replace(/y/g, 'and')
       .replace(/yo soy/g, 'I am')
       .replace(/hola/g, 'hello')
-      .replace(/mundo/g, 'world');
+      .replace(/mundo/g, 'world')
+      .replace(/le/g, 'the')
+      .replace(/est/g, 'is')
+      .replace(/et/g, 'and')
+      .replace(/je suis/g, 'I am')
+      .replace(/bonjour/g, 'hello')
+      .replace(/monde/g, 'world');
   }
   
   return { 
     translatedText,
-    detectedLanguage: sourceLanguage === 'auto' ? detectLanguage(text) : undefined
+    detectedLanguage
   };
 };
 
-// Text-to-speech service
+// Text-to-speech service with improved language support
 export const speakText = (text: string, language: string): void => {
   if ('speechSynthesis' in window) {
     const utterance = new SpeechSynthesisUtterance(text);
-    utterance.lang = language;
+    
+    // Map language codes to BCP 47 language tags for better compatibility
+    const languageMap: Record<string, string> = {
+      'en': 'en-US',
+      'es': 'es-ES',
+      'fr': 'fr-FR',
+      'de': 'de-DE',
+      'it': 'it-IT',
+      'pt': 'pt-BR',
+      'nl': 'nl-NL',
+      'ru': 'ru-RU',
+      'ar': 'ar-SA',
+      'hi': 'hi-IN',
+      'zh': 'zh-CN',
+      'ja': 'ja-JP',
+      'ko': 'ko-KR',
+    };
+    
+    utterance.lang = languageMap[language] || language;
     speechSynthesis.speak(utterance);
   } else {
     console.error('Text-to-speech is not supported in this browser');
