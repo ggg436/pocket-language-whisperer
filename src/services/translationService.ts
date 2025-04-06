@@ -1,4 +1,3 @@
-
 import { TranslationResult } from '@/types/translation';
 
 // Simulated offline translation data
@@ -76,7 +75,7 @@ const translationPairs: Record<string, Record<string, Record<string, string>>> =
   },
   fr: {
     en: {
-      'bonjour': 'hello',
+      'bonjour': 'hello', // This was duplicated with different translations
       'au revoir': 'goodbye',
       'comment ça va': 'how are you',
       'merci': 'thank you',
@@ -91,7 +90,6 @@ const translationPairs: Record<string, Record<string, Record<string, string>>> =
       'je ne comprends pas': 'i don\'t understand',
       'aidez-moi': 'help',
       'désolé': 'sorry',
-      'bonjour': 'good morning',
       'bon après-midi': 'good afternoon',
       'bonsoir': 'good evening',
       'combien ça coûte': 'how much is this',
