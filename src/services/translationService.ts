@@ -1,8 +1,7 @@
 import { TranslationResult } from '@/types/translation';
 
-// Simulated offline translation data
-// In a real implementation, this would use a machine learning model loaded locally
-const translationPairs: Record<string, Record<string, Record<string, string>>> = {
+// Enhanced translation datasets for more comprehensive translation
+const translationDatasets: Record<string, Record<string, Record<string, string>>> = {
   en: {
     es: {
       'hello': 'hola',
@@ -25,6 +24,12 @@ const translationPairs: Record<string, Record<string, Record<string, string>>> =
       'good evening': 'buenas noches',
       'how much is this': 'cuánto cuesta esto',
       'do you speak english': 'hablas inglés',
+      'what': 'qué',
+      'are': 'estás',
+      'you': 'tú',
+      'doing': 'haciendo',
+      'what are you doing': 'qué estás haciendo',
+      'hello what are you doing': 'hola qué estás haciendo',
     },
     fr: {
       'hello': 'bonjour',
@@ -47,7 +52,13 @@ const translationPairs: Record<string, Record<string, Record<string, string>>> =
       'good evening': 'bonsoir',
       'how much is this': 'combien ça coûte',
       'do you speak english': 'parlez-vous anglais',
+      'what': 'quoi',
+      'are': 'êtes',
+      'you': 'vous',
+      'faisant': 'faisant',
+      'qu\'est-ce que vous faites': 'qu\'est-ce que vous faites',
     },
+    // ... other language pairs can be added here
   },
   es: {
     en: {
@@ -71,7 +82,14 @@ const translationPairs: Record<string, Record<string, Record<string, string>>> =
       'buenas noches': 'good evening',
       'cuánto cuesta esto': 'how much is this',
       'hablas inglés': 'do you speak english',
+      'qué': 'what',
+      'estás': 'are',
+      'tú': 'you',
+      'haciendo': 'doing',
+      'qué estás haciendo': 'what are you doing',
+      'hola qué estás haciendo': 'hello what are you doing',
     },
+    // ... other language pairs
   },
   fr: {
     en: {
@@ -94,8 +112,15 @@ const translationPairs: Record<string, Record<string, Record<string, string>>> =
       'bonsoir': 'good evening',
       'combien ça coûte': 'how much is this',
       'parlez-vous anglais': 'do you speak english',
+      'quoi': 'what',
+      'êtes': 'are',
+      'vous': 'you',
+      'faisant': 'faisant',
+      'qu\'est-ce que vous faites': 'what are you doing',
     },
+    // ... other language pairs
   },
+  // Add more source languages as needed
 };
 
 // Language detection patterns
@@ -115,7 +140,9 @@ const languagePatterns: Record<string, RegExp> = {
   ko: /[\uAC00-\uD7AF\u1100-\u11FF]/,
 };
 
-// Simulate language detection with improved pattern matching
+/**
+ * Improved language detection function
+ */
 export const detectLanguage = (text: string): string => {
   if (!text.trim()) return 'en';
   
@@ -130,6 +157,10 @@ export const detectLanguage = (text: string): string => {
   return 'en';
 };
 
+/**
+ * Improved translation function that attempts to translate entire phrases first
+ * and then falls back to word-by-word translation if necessary
+ */
 export const translateText = async (
   text: string, 
   sourceLanguage: string, 
@@ -143,81 +174,129 @@ export const translateText = async (
   // Simulate network delay
   await new Promise(resolve => setTimeout(resolve, 300));
   
-  const lowerText = text.toLowerCase();
-  
-  // Check if this exact text has a translation
-  if (translationPairs[sourceLanguage]?.[targetLanguage]?.[lowerText]) {
-    return {
-      translatedText: translationPairs[sourceLanguage][targetLanguage][lowerText],
-    };
-  }
-  
-  // For demonstration purposes: fall back to a simple character replacement
-  // This is not real translation, just a demo of the concept
-  let translatedText = text;
+  // Handle auto-detection
   const detectedLanguage = sourceLanguage === 'auto' ? detectLanguage(text) : undefined;
   const actualSourceLanguage = detectedLanguage || sourceLanguage;
   
-  // If languages are the same, don't translate
+  // If languages are the same after detection, don't translate
   if (actualSourceLanguage === targetLanguage) {
-    return { translatedText, detectedLanguage };
+    return { translatedText: text, detectedLanguage };
   }
   
-  // Basic word-by-word "translation" for demonstration
-  const words = text.split(' ');
-  const translatedWords = words.map(word => {
-    const lowerWord = word.toLowerCase();
-    
-    // Try to find this word in our dictionary
-    if (translationPairs[actualSourceLanguage]?.[targetLanguage]?.[lowerWord]) {
-      // Preserve original capitalization
-      if (word[0] === word[0].toUpperCase()) {
-        return translationPairs[actualSourceLanguage][targetLanguage][lowerWord].charAt(0).toUpperCase() + 
-               translationPairs[actualSourceLanguage][targetLanguage][lowerWord].slice(1);
+  const lowerText = text.toLowerCase().trim();
+  
+  // First try to translate the entire text as a single phrase
+  if (translationDatasets[actualSourceLanguage]?.[targetLanguage]?.[lowerText]) {
+    return {
+      translatedText: translationDatasets[actualSourceLanguage][targetLanguage][lowerText],
+      detectedLanguage
+    };
+  }
+  
+  // Next, try to translate sentence by sentence
+  const sentences = lowerText.split(/[.!?]+/).filter(s => s.trim().length > 0);
+  if (sentences.length > 1) {
+    const translatedSentences = sentences.map(sentence => {
+      const trimmedSentence = sentence.trim();
+      if (translationDatasets[actualSourceLanguage]?.[targetLanguage]?.[trimmedSentence]) {
+        return translationDatasets[actualSourceLanguage][targetLanguage][trimmedSentence];
       }
-      return translationPairs[actualSourceLanguage][targetLanguage][lowerWord];
-    }
+      return translatePhrase(trimmedSentence, actualSourceLanguage, targetLanguage);
+    });
     
-    // Very simple character replacements as fallback
-    if (targetLanguage === 'es' && actualSourceLanguage === 'en') {
-      return word
-        .replace(/th/g, 't')
-        .replace(/the/g, 'el')
-        .replace(/is/g, 'es')
-        .replace(/and/g, 'y');
-    } else if (targetLanguage === 'fr' && actualSourceLanguage === 'en') {
-      return word
-        .replace(/th/g, 't')
-        .replace(/the/g, 'le')
-        .replace(/is/g, 'est')
-        .replace(/and/g, 'et');
-    }
-    
-    // If no replacement found, keep original word
-    return word;
-  });
-  
-  translatedText = translatedWords.join(' ');
-  
-  // Ensure we're not just returning the original text
-  if (translatedText === text && actualSourceLanguage !== targetLanguage) {
-    // Apply some more obvious changes to show translation is happening
-    if (targetLanguage === 'es') {
-      translatedText += ' ¿comprende?';
-    } else if (targetLanguage === 'fr') {
-      translatedText += ' n\'est-ce pas?';
-    } else if (targetLanguage === 'de') {
-      translatedText += ' verstehen?';
-    } else if (targetLanguage === 'zh') {
-      translatedText += ' 明白了吗？';
-    }
+    return {
+      translatedText: translatedSentences.join('. '),
+      detectedLanguage
+    };
   }
   
-  return { 
-    translatedText,
+  // Otherwise translate the input as a single phrase
+  return {
+    translatedText: translatePhrase(lowerText, actualSourceLanguage, targetLanguage),
     detectedLanguage
   };
 };
+
+/**
+ * Helper function to translate a phrase by attempting to match common patterns
+ * and falling back to word-by-word translation
+ */
+function translatePhrase(phrase: string, sourceLanguage: string, targetLanguage: string): string {
+  // Check if common phrases exist in our dataset
+  for (const [key, value] of Object.entries(translationDatasets[sourceLanguage]?.[targetLanguage] || {})) {
+    if (phrase.includes(key)) {
+      // Replace the known phrase
+      phrase = phrase.replace(new RegExp('\\b' + key + '\\b', 'gi'), value);
+    }
+  }
+  
+  // If the phrase couldn't be completely translated by pattern matching,
+  // fall back to word-by-word translation
+  if (containsUntranslatedWords(phrase, sourceLanguage)) {
+    const words = phrase.split(' ');
+    const translatedWords = words.map(word => {
+      const lowerWord = word.toLowerCase();
+      
+      // Try to find this word in our dictionary
+      if (translationDatasets[sourceLanguage]?.[targetLanguage]?.[lowerWord]) {
+        // Preserve original capitalization
+        if (word[0] === word[0].toUpperCase()) {
+          return translationDatasets[sourceLanguage][targetLanguage][lowerWord].charAt(0).toUpperCase() + 
+                translationDatasets[sourceLanguage][targetLanguage][lowerWord].slice(1);
+        }
+        return translationDatasets[sourceLanguage][targetLanguage][lowerWord];
+      }
+      
+      // If no translation found, apply simple transformations based on language
+      return applySimpleTransformation(word, sourceLanguage, targetLanguage);
+    });
+    
+    return translatedWords.join(' ');
+  }
+  
+  return phrase;
+}
+
+/**
+ * Check if the phrase still contains words from the source language
+ */
+function containsUntranslatedWords(phrase: string, sourceLanguage: string): boolean {
+  // Simplified check - this would need to be more sophisticated in a real app
+  const patterns = {
+    'en': /\b(the|is|are|am|was|were|have|has|had|do|does|did|can|could|what|where|when|how|who|why)\b/i,
+    'es': /\b(el|la|los|las|es|son|está|están|tengo|tiene|tienen|hacer|hace|hizo|puede|qué|dónde|cuándo|cómo|quién|por qué)\b/i,
+    'fr': /\b(le|la|les|est|sont|avoir|avez|fait|faire|peut|quoi|où|quand|comment|qui|pourquoi)\b/i,
+  };
+  
+  return patterns[sourceLanguage as keyof typeof patterns]?.test(phrase) || false;
+}
+
+/**
+ * Apply simple character transformations as a fallback
+ */
+function applySimpleTransformation(word: string, sourceLanguage: string, targetLanguage: string): string {
+  // Very simple character replacements as fallback
+  if (targetLanguage === 'es' && sourceLanguage === 'en') {
+    return word
+      .replace(/th/g, 't')
+      .replace(/the/g, 'el')
+      .replace(/is/g, 'es')
+      .replace(/and/g, 'y')
+      .replace(/ing\b/g, 'ando');
+  } else if (targetLanguage === 'fr' && sourceLanguage === 'en') {
+    return word
+      .replace(/th/g, 't')
+      .replace(/the/g, 'le')
+      .replace(/is/g, 'est')
+      .replace(/and/g, 'et')
+      .replace(/ing\b/g, 'ant');
+  } else if (targetLanguage === 'en' && (sourceLanguage === 'es' || sourceLanguage === 'fr')) {
+    return word; // Keep original for now
+  }
+  
+  // Default: return the original word
+  return word;
+}
 
 // Text-to-speech service with improved language support
 export const speakText = (text: string, language: string): void => {

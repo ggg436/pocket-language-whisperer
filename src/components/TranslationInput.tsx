@@ -6,14 +6,14 @@ import { Card } from '@/components/ui/card';
 import { translateText, speakText, detectLanguage } from '@/services/translationService';
 import { getLanguageName } from '@/data/languages';
 import { useTranslation } from '@/context/TranslationContext';
-import { Volume, Loader2 } from 'lucide-react';
+import { Volume, Loader2, Copy } from 'lucide-react';
 import { useToast } from '@/components/ui/use-toast';
 
 const TranslationInput: React.FC = () => {
   const [sourceText, setSourceText] = useState('');
   const [translatedText, setTranslatedText] = useState('');
   const [isTranslating, setIsTranslating] = useState(false);
-  const { sourceLanguage, targetLanguage, swapLanguages, addToHistory } = useTranslation();
+  const { sourceLanguage, targetLanguage, addToHistory } = useTranslation();
   const { toast } = useToast();
 
   // Effect to handle translation when text, source, or target language changes
@@ -25,7 +25,7 @@ const TranslationInput: React.FC = () => {
           const result = await translateText(sourceText, sourceLanguage, targetLanguage);
           setTranslatedText(result.translatedText);
           
-          // Add to history
+          // Add to history if translation is different from source
           if (result.translatedText && result.translatedText !== sourceText) {
             addToHistory({
               id: Date.now().toString(),
@@ -77,6 +77,15 @@ const TranslationInput: React.FC = () => {
     speakText(text, language);
   };
 
+  const handleCopyText = (text: string) => {
+    navigator.clipboard.writeText(text).then(() => {
+      toast({
+        title: "Copied",
+        description: "Text copied to clipboard",
+      });
+    });
+  };
+
   return (
     <div className="flex flex-col w-full max-w-3xl mx-auto">
       <h2 className="text-center text-lg font-medium mb-4">Text Translation</h2>
@@ -109,6 +118,16 @@ const TranslationInput: React.FC = () => {
                 className="text-xs text-google-blue"
               >
                 Detect
+              </Button>
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => handleCopyText(sourceText)}
+                disabled={!sourceText}
+                className="text-xs text-gray-500"
+              >
+                <Copy className="h-3 w-3 mr-1" />
+                Copy
               </Button>
               <Button
                 variant="ghost"
@@ -149,6 +168,16 @@ const TranslationInput: React.FC = () => {
             >
               <Volume className="h-4 w-4 mr-1" />
               <span className="text-xs">Listen</span>
+            </Button>
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => handleCopyText(translatedText)}
+              disabled={!translatedText}
+              className="text-gray-500"
+            >
+              <Copy className="h-3 w-3 mr-1" />
+              <span className="text-xs">Copy</span>
             </Button>
           </div>
         </Card>

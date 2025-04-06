@@ -5,7 +5,7 @@ import { Card } from '@/components/ui/card';
 import { useToast } from '@/components/ui/use-toast';
 import { translateText, speakText, startSpeechRecognition } from '@/services/translationService';
 import { useTranslation } from '@/context/TranslationContext';
-import { Mic, MicOff, Volume, Loader2 } from 'lucide-react';
+import { Mic, MicOff, Volume, Loader2, Copy } from 'lucide-react';
 
 const VoiceConversation: React.FC = () => {
   const [isListening, setIsListening] = useState(false);
@@ -36,7 +36,7 @@ const VoiceConversation: React.FC = () => {
         setTranslatedText(result.translatedText);
         
         // Automatically speak the translation
-        if (result.translatedText) {
+        if (result.translatedText && result.translatedText !== sourceText) {
           speakText(result.translatedText, targetLanguage);
           
           // Add to history
@@ -83,7 +83,7 @@ const VoiceConversation: React.FC = () => {
       .then(() => {
         toast({
           title: "Listening",
-          description: `Speak in ${sourceLanguage} and I'll translate to ${targetLanguage}`,
+          description: `Speak in ${sourceLanguage === 'en' ? 'English' : sourceLanguage} and I'll translate to ${targetLanguage === 'es' ? 'Spanish' : targetLanguage}`,
         });
         
         stopRecognitionRef.current = startSpeechRecognition(
@@ -107,6 +107,15 @@ const VoiceConversation: React.FC = () => {
       });
   };
 
+  const handleCopyText = (text: string) => {
+    navigator.clipboard.writeText(text).then(() => {
+      toast({
+        title: "Copied",
+        description: "Text copied to clipboard",
+      });
+    });
+  };
+
   return (
     <div className="mt-6 mb-4">
       <h2 className="text-center text-lg font-medium mb-4">Voice Conversation</h2>
@@ -119,22 +128,34 @@ const VoiceConversation: React.FC = () => {
             ) : (
               <p className="text-gray-400">
                 {isListening 
-                  ? "Listening..." 
+                  ? "Listening... Speak now" 
                   : "Tap the microphone button and speak"}
               </p>
             )}
           </div>
           <div className="flex justify-between items-center">
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => speakText(sourceText, sourceLanguage)}
-              disabled={!sourceText}
-              className="text-gray-500"
-            >
-              <Volume className="h-4 w-4 mr-1" />
-              <span className="text-xs">Listen</span>
-            </Button>
+            <div className="flex gap-2">
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => speakText(sourceText, sourceLanguage)}
+                disabled={!sourceText}
+                className="text-gray-500"
+              >
+                <Volume className="h-4 w-4 mr-1" />
+                <span className="text-xs">Listen</span>
+              </Button>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => handleCopyText(sourceText)}
+                disabled={!sourceText}
+                className="text-gray-500"
+              >
+                <Copy className="h-3 w-3 mr-1" />
+                <span className="text-xs hidden sm:inline">Copy</span>
+              </Button>
+            </div>
             <Button
               variant={isListening ? "destructive" : "default"}
               onClick={toggleListening}
@@ -163,7 +184,7 @@ const VoiceConversation: React.FC = () => {
               <p className="text-gray-400">Translation will appear here</p>
             )}
           </div>
-          <div className="flex justify-end">
+          <div className="flex justify-between">
             <Button
               variant="outline"
               size="sm"
@@ -173,6 +194,16 @@ const VoiceConversation: React.FC = () => {
             >
               <Volume className="h-4 w-4 mr-1" />
               <span className="text-xs">Listen</span>
+            </Button>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => handleCopyText(translatedText)}
+              disabled={!translatedText}
+              className="text-gray-500"
+            >
+              <Copy className="h-3 w-3 mr-1" />
+              <span className="text-xs hidden sm:inline">Copy</span>
             </Button>
           </div>
         </Card>

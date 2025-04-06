@@ -6,7 +6,8 @@ import TranslationInput from '@/components/TranslationInput';
 import VoiceConversation from '@/components/VoiceConversation';
 import { TranslationProvider, useTranslation } from '@/context/TranslationContext';
 import HistoryDrawer from '@/components/HistoryDrawer';
-import { History, ArrowLeftRight } from 'lucide-react';
+import { History, ArrowLeftRight, Globe } from 'lucide-react';
+import { getLanguageName } from '@/data/languages';
 
 const TranslatorApp: React.FC = () => {
   const { sourceLanguage, targetLanguage, setSourceLanguage, setTargetLanguage, swapLanguages } = useTranslation();
@@ -26,12 +27,18 @@ const TranslatorApp: React.FC = () => {
               <span className="ml-2">Translate</span>
             </h1>
           </div>
-          <HistoryDrawer>
-            <Button variant="ghost" size="sm" className="text-gray-500 flex items-center gap-1">
-              <History className="h-4 w-4" />
-              <span className="hidden sm:inline text-sm">History</span>
+          <div className="flex items-center space-x-2">
+            <Button variant="ghost" size="sm" className="text-gray-500 hidden md:flex items-center gap-1">
+              <Globe className="h-4 w-4" />
+              <span className="text-sm">Offline Mode</span>
             </Button>
-          </HistoryDrawer>
+            <HistoryDrawer>
+              <Button variant="ghost" size="sm" className="text-gray-500 flex items-center gap-1">
+                <History className="h-4 w-4" />
+                <span className="hidden sm:inline text-sm">History</span>
+              </Button>
+            </HistoryDrawer>
+          </div>
         </div>
       </header>
 
@@ -49,7 +56,8 @@ const TranslatorApp: React.FC = () => {
             <Button
               variant="ghost"
               onClick={swapLanguages}
-              className="px-2 mx-0 sm:mx-2"
+              className="px-2 mx-0 sm:mx-2 hover:bg-gray-100"
+              aria-label="Swap languages"
             >
               <ArrowLeftRight className="h-4 w-4" />
             </Button>
@@ -61,6 +69,10 @@ const TranslatorApp: React.FC = () => {
                 label="Translate to"
               />
             </div>
+          </div>
+
+          <div className="text-center text-sm text-gray-500 mb-3">
+            Translating from <span className="font-medium">{getLanguageName(sourceLanguage)}</span> to <span className="font-medium">{getLanguageName(targetLanguage)}</span>
           </div>
 
           <TranslationInput />
