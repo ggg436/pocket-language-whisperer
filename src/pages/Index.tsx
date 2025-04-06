@@ -1,13 +1,83 @@
-// Update this page (the content is just a fallback if you fail to update the page)
 
-const Index = () => {
+import React from 'react';
+import { Button } from '@/components/ui/button';
+import LanguageSelector from '@/components/LanguageSelector';
+import TranslationInput from '@/components/TranslationInput';
+import { TranslationProvider, useTranslation } from '@/context/TranslationContext';
+import HistoryDrawer from '@/components/HistoryDrawer';
+import { History, ArrowLeftRight } from 'lucide-react';
+
+const TranslatorApp: React.FC = () => {
+  const { sourceLanguage, targetLanguage, setSourceLanguage, setTargetLanguage, swapLanguages } = useTranslation();
+
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
-      <div className="text-center">
-        <h1 className="text-4xl font-bold mb-4">Welcome to Your Blank App</h1>
-        <p className="text-xl text-gray-600">Start building your amazing project here!</p>
-      </div>
+    <div className="min-h-screen flex flex-col bg-app-bg">
+      <header className="px-4 py-2 border-b border-gray-100 bg-white shadow-sm">
+        <div className="flex items-center justify-between max-w-3xl mx-auto">
+          <div className="flex items-center">
+            <h1 className="text-lg font-medium text-google-blue">
+              <span className="text-google-blue">P</span>
+              <span className="text-google-red">o</span>
+              <span className="text-google-yellow">c</span>
+              <span className="text-google-blue">k</span>
+              <span className="text-google-green">e</span>
+              <span className="text-google-red">t</span>
+              <span className="ml-2">Translate</span>
+            </h1>
+          </div>
+          <HistoryDrawer>
+            <Button variant="ghost" size="sm" className="text-gray-500 flex items-center gap-1">
+              <History className="h-4 w-4" />
+              <span className="hidden sm:inline text-sm">History</span>
+            </Button>
+          </HistoryDrawer>
+        </div>
+      </header>
+
+      <main className="flex-1 p-4 flex flex-col">
+        <div className="max-w-3xl mx-auto w-full my-4">
+          <div className="flex flex-wrap gap-2 items-center justify-center mb-4">
+            <div className="flex-1 min-w-[150px]">
+              <LanguageSelector
+                value={sourceLanguage}
+                onChange={setSourceLanguage}
+                label="Translate from"
+              />
+            </div>
+            
+            <Button
+              variant="ghost"
+              onClick={swapLanguages}
+              className="px-2 mx-0 sm:mx-2"
+            >
+              <ArrowLeftRight className="h-4 w-4" />
+            </Button>
+            
+            <div className="flex-1 min-w-[150px]">
+              <LanguageSelector
+                value={targetLanguage}
+                onChange={setTargetLanguage}
+                label="Translate to"
+              />
+            </div>
+          </div>
+
+          <TranslationInput />
+        </div>
+      </main>
+
+      <footer className="py-3 text-center text-xs text-gray-500 border-t border-gray-100">
+        <p>Works completely offline. No internet connection required.</p>
+      </footer>
     </div>
+  );
+};
+
+const Index: React.FC = () => {
+  return (
+    <TranslationProvider>
+      <TranslatorApp />
+    </TranslationProvider>
   );
 };
 
