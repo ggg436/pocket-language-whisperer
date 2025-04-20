@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import LanguageSelector from '@/components/LanguageSelector';
@@ -34,6 +33,9 @@ const TranslatorApp: React.FC = () => {
             <Button variant="ghost" size="sm" className="text-gray-500 hidden md:flex items-center gap-1">
               <Globe className="h-4 w-4" />
               <span className="text-sm">Offline Mode</span>
+            </Button>
+            <Button variant="ghost" size="sm" className="text-gray-500 flex items-center gap-1">
+              <span className="text-sm">How are you</span>
             </Button>
             <HistoryDrawer>
               <Button variant="ghost" size="sm" className="text-gray-500 flex items-center gap-1">
